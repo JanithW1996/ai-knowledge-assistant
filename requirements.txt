@@ -1,0 +1,14 @@
+# Load local environment settings
+python-dotenv>=1.0,<2
+
+# Sign in securely to Azure
+azure-identity>=1.17,<2
+
+# Read secrets securely from Azure Key Vault
+azure-keyvault-secrets>=4.8,<5
+
+# Work with documents in Azure Blob Storage
+azure-storage-blob>=12.22,<13
+
+# Run automated tests
+pytest>=8,<9

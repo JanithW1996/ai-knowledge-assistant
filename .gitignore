@@ -1,0 +1,25 @@
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+
+# Python virtual environment
+.venv/
+
+# Python temporary files
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Logs and generated data
+logs/
+data/raw/
+data/processed/
+
+# Editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Azure local files
+.azure/
