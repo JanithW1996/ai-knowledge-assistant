@@ -30,4 +30,5 @@ Do not add real customer, employee, operational, confidential, personal, or prod
 
 ## Current status
 
-Day 1: local project foundation and governance setup.
+- Day 1 complete: local project foundation, governance, testing, and GitHub setup.
+- Day 2 complete: synthetic knowledge documents, classification metadata, dataset validation, and role-based document access.
