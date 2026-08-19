@@ -1,0 +1,39 @@
+{
+  "organisation": "Example Services Group",
+  "synthetic": true,
+  "documents": [
+    {
+      "id": "PUB-001",
+      "title": "Company Overview",
+      "path": "public/company-overview.md",
+      "classification": "public",
+      "allowed_roles": [
+        "employee",
+        "manager",
+        "hr_adviser",
+        "it_support_officer"
+      ]
+    },
+    {
+      "id": "INT-001",
+      "title": "Workplace Guide",
+      "path": "internal/workplace-guide.md",
+      "classification": "internal",
+      "allowed_roles": [
+        "employee",
+        "manager",
+        "hr_adviser",
+        "it_support_officer"
+      ]
+    },
+    {
+      "id": "HR-001",
+      "title": "Leave Processing Guide",
+      "path": "restricted/hr/leave-processing-guide.md",
+      "classification": "restricted",
+      "allowed_roles": [
+        "hr_adviser"
+      ]
+    }
+  ]
+}
