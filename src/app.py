@@ -4,7 +4,7 @@ import argparse
 
 from dotenv import load_dotenv
 
-from src.context_builder import build_context
+from src.answer_service import answer_question
 
 
 VALID_ROLES = [
@@ -29,14 +29,17 @@ def main(
         print("Enter a question to search the knowledge base.")
         return
 
-    context = build_context(question, role)
+    result = answer_question(question, role)
 
-    if not context:
-        print("No authorised matching context found.")
-        return
+    print("\nAnswer:\n")
+    print(result["answer"])
 
-    print("\nAuthorised context preview:\n")
-    print(context)
+    if result["citations"]:
+        print("\nSources:")
+        for citation in result["citations"]:
+            print(f"- {citation}")
+
+    print(f"\nMode: {result['mode']}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
