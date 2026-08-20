@@ -28,7 +28,15 @@ Do not add real customer, employee, operational, confidential, personal, or prod
 - `infra/` — Azure infrastructure definitions
 - `scripts/` — setup and deployment helpers
 
+## Local document search
+
+Activate the virtual environment, then run:
+
+```powershell
+python -m src.app "How should I report a security incident?" --role employee
+
 ## Current status
 
 - Day 1 complete: local project foundation, governance, testing, and GitHub setup.
 - Day 2 complete: synthetic knowledge documents, classification metadata, dataset validation, and role-based document access.
+- Day 3 complete: authorised keyword retrieval, relevance ranking, command-line search, and source references.
