@@ -40,3 +40,4 @@ python -m src.app "How should I report a security incident?" --role employee
 - Day 1 complete: local project foundation, governance, testing, and GitHub setup.
 - Day 2 complete: synthetic knowledge documents, classification metadata, dataset validation, and role-based document access.
 - Day 3 complete: authorised keyword retrieval, relevance ranking, command-line search, and source references.
+- Day 4 complete: document chunking, authorised passage retrieval, controlled context limits, and precise citations
