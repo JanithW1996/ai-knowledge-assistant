@@ -28,12 +28,24 @@ Do not add real customer, employee, operational, confidential, personal, or prod
 - `infra/` — Azure infrastructure definitions
 - `scripts/` — setup and deployment helpers
 
-## Local document search
+## Local grounded answer demo
 
 Activate the virtual environment, then run:
 
 ```powershell
 python -m src.app "How should I report a security incident?" --role employee
+```
+
+The current mode is a deterministic local extractive answer, not an external AI model.
+
+Supported fictional roles:
+
+- `employee`
+- `manager`
+- `hr_adviser`
+- `it_support_officer`
+
+The application filters documents by role before calculating relevance.
 
 ## Current status
 
@@ -41,3 +53,4 @@ python -m src.app "How should I report a security incident?" --role employee
 - Day 2 complete: synthetic knowledge documents, classification metadata, dataset validation, and role-based document access.
 - Day 3 complete: authorised keyword retrieval, relevance ranking, command-line search, and source references.
 - Day 4 complete: document chunking, authorised passage retrieval, controlled context limits, and precise citations
+- Day 5 complete: grounded answer service, safe abstention, prompt boundaries, citations, and local extractive mode.
