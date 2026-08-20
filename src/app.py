@@ -4,7 +4,7 @@ import argparse
 
 from dotenv import load_dotenv
 
-from src.retrieval import search_documents
+from src.context_builder import build_context
 
 
 VALID_ROLES = [
@@ -29,21 +29,14 @@ def main(
         print("Enter a question to search the knowledge base.")
         return
 
-    results = search_documents(question, role)
+    context = build_context(question, role)
 
-    if not results:
-        print("No authorised matching documents found.")
+    if not context:
+        print("No authorised matching context found.")
         return
 
-    print("\nRelevant authorised sources:")
-
-    for result in results:
-        matched = ", ".join(result["matched_terms"])
-        print(
-            f"- {result['id']}: {result['title']} "
-            f"(score={result['score']}; matched={matched})"
-        )
-
+    print("\nAuthorised context preview:\n")
+    print(context)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
