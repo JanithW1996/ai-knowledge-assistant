@@ -18,7 +18,7 @@ def retrieve_passages(
     passages = []
 
     for document in get_authorised_documents(role):
-        content = read_authorised_document(document["id"], role)
+        content = read_authorised_document(document.id, role)
 
         for number, text in enumerate(chunk_text(content), start=1):
             matched_terms = question_terms & tokenise(text)
@@ -29,10 +29,10 @@ def retrieve_passages(
 
             passages.append(
                 {
-                    "citation": f"{document['id']}#passage-{number}",
-                    "document_id": document["id"],
-                    "title": document["title"],
-                    "classification": document["classification"],
+                    "citation": f"{document.id}#passage-{number}",
+                    "document_id": document.id,
+                    "title": document.title,
+                    "classification": document.classification,
                     "score": score,
                     "matched_terms": sorted(matched_terms),
                     "text": text,

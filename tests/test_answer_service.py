@@ -4,6 +4,7 @@ import pytest
 
 from src.answer_service import ABSTENTION_MESSAGE, answer_question
 from src.prompt_builder import build_messages
+from src.core.models import GenerationRequest
 
 
 def test_answer_is_grounded_and_cited() -> None:
@@ -63,3 +64,28 @@ def test_empty_context_is_rejected() -> None:
     """A model request must not be created without evidence."""
     with pytest.raises(ValueError):
         build_messages("What is the policy?", "")
+
+
+class FakeAnswerProvider:
+    """Simulate an external AI provider without an API call."""
+
+    name = "fake_provider"
+
+    def generate(self, request: GenerationRequest) -> str:
+        """Return a predictable test response."""
+        assert request.messages
+        return "Synthetic provider-generated answer."
+
+
+def test_answer_provider_can_be_replaced() -> None:
+    """The answer service should accept another provider."""
+    result = answer_question(
+        "How should I report a security incident?",
+        "employee",
+        provider=FakeAnswerProvider(),
+    )
+
+    assert result["answer"] == "Synthetic provider-generated answer."
+    assert result["mode"] == "fake_provider"
+    assert result["grounded"] is True
+    assert result["citations"][0].startswith("INT-001#passage-")

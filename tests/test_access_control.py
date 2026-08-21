@@ -11,7 +11,7 @@ from src.access_control import (
 def test_employee_sees_public_and_internal_documents() -> None:
     """Employees should see two non-restricted documents."""
     documents = get_authorised_documents("employee")
-    document_ids = {document["id"] for document in documents}
+    document_ids = {document.id for document in documents}
 
     assert document_ids == {"PUB-001", "INT-001"}
 

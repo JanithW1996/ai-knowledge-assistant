@@ -36,16 +36,16 @@ def search_documents(
     results = []
 
     for document in get_authorised_documents(role):
-        content = read_authorised_document(document["id"], role)
+        content = read_authorised_document(document.id, role)
         matched_terms = question_terms & tokenise(content)
         score = len(matched_terms)
 
         if score > 0:
             results.append(
                 {
-                    "id": document["id"],
-                    "title": document["title"],
-                    "classification": document["classification"],
+                    "id": document.id,
+                    "title": document.title,
+                    "classification": document.classification,
                     "score": score,
                     "matched_terms": sorted(matched_terms),
                 }

@@ -54,3 +54,4 @@ The application filters documents by role before calculating relevance.
 - Day 3 complete: authorised keyword retrieval, relevance ranking, command-line search, and source references.
 - Day 4 complete: document chunking, authorised passage retrieval, controlled context limits, and precise citations
 - Day 5 complete: grounded answer service, safe abstention, prompt boundaries, citations, and local extractive mode.
+- Day 6 complete: provider-neutral models, repository and answer ports, local adapters, dependency injection, and future integration boundaries.

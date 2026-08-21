@@ -1,6 +1,9 @@
-"""Create grounded answers from authorised context."""
+"""Create grounded answers using replaceable providers."""
 
 from src.context_builder import build_context, retrieve_passages
+from src.core.models import GenerationRequest
+from src.dependencies import create_answer_provider
+from src.ports.answer_provider import AnswerProvider
 from src.prompt_builder import build_messages
 
 
@@ -9,8 +12,12 @@ ABSTENTION_MESSAGE = (
 )
 
 
-def answer_question(question: str, role: str) -> dict:
-    """Return an extractive grounded answer or safely abstain."""
+def answer_question(
+    question: str,
+    role: str,
+    provider: AnswerProvider | None = None,
+) -> dict:
+    """Return a grounded provider answer or safely abstain."""
     passages = retrieve_passages(question, role)
 
     if not passages:
@@ -24,14 +31,16 @@ def answer_question(question: str, role: str) -> dict:
     context = build_context(question, role)
     messages = build_messages(question, context)
     strongest_passage = passages[0]
+    selected_provider = provider or create_answer_provider()
+
+    request = GenerationRequest(
+        messages=tuple(messages),
+        extractive_fallback=strongest_passage["text"],
+    )
 
     return {
-        "answer": (
-            f"{strongest_passage['text']}\n\n"
-            "This answer uses fictional demonstration data."
-        ),
+        "answer": selected_provider.generate(request),
         "citations": [strongest_passage["citation"]],
         "grounded": True,
-        "mode": "local_extractive",
-        "messages": messages,
+        "mode": selected_provider.name,
     }
