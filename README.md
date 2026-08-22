@@ -56,3 +56,4 @@ The application filters documents by role before calculating relevance.
 - Day 5 complete: grounded answer service, safe abstention, prompt boundaries, citations, and local extractive mode.
 - Day 6 complete: provider-neutral models, repository and answer ports, local adapters, dependency injection, and future integration boundaries.
 - Day 7 complete: Azure CLI and Bicep setup, subscription governance, naming and tags, AUD $10 budget alerts, reviewed infrastructure deployment, and an empty governed resource group.
+- Day 8 complete: secure Azure Storage, private document container, managed identity, Key Vault, RBAC, recovery controls, and synthetic document upload.

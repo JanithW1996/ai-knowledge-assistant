@@ -23,3 +23,6 @@ Thumbs.db
 
 # Azure local files
 .azure/
+
+# Generated Azure Bicep build output
+infra/azure/**/main.json
