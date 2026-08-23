@@ -9,31 +9,50 @@ VALID_ENVIRONMENTS = {
     "production",
 }
 
+VALID_IDENTITY_MODES = {
+    "demo",
+    "entra",
+}
 
-def validate_runtime_security() -> None:
-    """Prevent the demonstration identity mode running in production."""
-    environment = os.getenv(
+
+def get_environment() -> str:
+    """Return the configured application environment."""
+    return os.getenv(
         "APP_ENVIRONMENT",
         "development",
     ).strip().lower()
 
-    identity_mode = os.getenv(
+
+def get_identity_mode() -> str:
+    """Return the configured identity mode."""
+    return os.getenv(
         "IDENTITY_MODE",
         "demo",
     ).strip().lower()
 
+
+def validate_runtime_security() -> None:
+    """Reject unsafe environment and identity combinations."""
+    environment = get_environment()
+    identity_mode = get_identity_mode()
+
     if environment not in VALID_ENVIRONMENTS:
         raise RuntimeError(
-            f"Unsupported APP_ENVIRONMENT: {environment}"
+            "Unsupported APP_ENVIRONMENT: "
+            f"{environment}"
         )
 
-    if identity_mode != "demo":
+    if identity_mode not in VALID_IDENTITY_MODES:
         raise RuntimeError(
-            f"Unsupported IDENTITY_MODE: {identity_mode}"
+            "Unsupported IDENTITY_MODE: "
+            f"{identity_mode}"
         )
 
-    if environment == "production":
+    if (
+        environment == "production"
+        and identity_mode != "entra"
+    ):
         raise RuntimeError(
-            "Production startup is blocked until verified "
-            "organisational identity is implemented."
+            "Production startup requires verified "
+            "Microsoft Entra identity mode."
         )

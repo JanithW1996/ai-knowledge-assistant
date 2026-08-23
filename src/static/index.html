@@ -12,7 +12,7 @@
   >
   <title>AI Knowledge Assistant</title>
   <link rel="stylesheet" href="/static/styles.css">
-  <script src="/static/app.js?v=3" defer></script>
+  <script src="/static/app.js?v=4" defer></script>
 </head>
 
 <body>
@@ -23,6 +23,7 @@
       aria-label="AI Knowledge Assistant home"
     >
       <span class="brand-mark">AK</span>
+
       <span>
         <strong>AI Knowledge Assistant</strong>
         <small>Governed organisational knowledge</small>
@@ -68,7 +69,10 @@
           </h2>
         </div>
 
-        <label class="role-field">
+        <label
+          id="demo-role-field"
+          class="role-field"
+        >
           <span>Demo persona</span>
 
           <select id="role">
@@ -97,6 +101,22 @@
             </option>
           </select>
         </label>
+
+        <div
+          id="verified-identity"
+          class="verified-identity"
+          hidden
+        >
+          <span>Verified identity</span>
+          <strong id="identity-name"></strong>
+          <small id="identity-role"></small>
+
+          <a
+            href="/.auth/logout?post_logout_redirect_uri=/"
+          >
+            Sign out
+          </a>
+        </div>
       </div>
 
       <form id="question-form">
@@ -120,8 +140,9 @@
           <button
             id="ask-button"
             type="submit"
+            disabled
           >
-            <span>Ask assistant</span>
+            <span>Checking identity...</span>
             <span aria-hidden="true">→</span>
           </button>
         </div>
@@ -189,7 +210,10 @@
         </div>
       </div>
 
-      <p class="demo-notice">
+      <p
+        id="identity-notice"
+        class="demo-notice"
+      >
         Demo personas simulate access levels. Production access
         must come from a verified organisational identity.
       </p>
@@ -246,8 +270,8 @@
         <span class="trust-number">01</span>
         <h3>Authorised access</h3>
         <p>
-          Documents are filtered using the selected
-          demonstration role.
+          Documents are filtered using a trusted
+          organisational role.
         </p>
       </article>
 
