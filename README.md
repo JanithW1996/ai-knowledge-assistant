@@ -47,6 +47,18 @@ Supported fictional roles:
 
 The application filters documents by role before calculating relevance.
 
+## Local API demo
+
+Keep `DOCUMENT_REPOSITORY=local` in the ignored `.env` file, then run:
+
+```powershell
+python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
+```
+
+Open `http://127.0.0.1:8000/docs` to test the local API.
+
+The role in the current API request is for local demonstration only. Do not expose the API publicly until verified Microsoft Entra identities are mapped to trusted roles.
+
 ## Current status
 
 - Day 1 complete: local project foundation, governance, testing, and GitHub setup.
@@ -57,3 +69,4 @@ The application filters documents by role before calculating relevance.
 - Day 6 complete: provider-neutral models, repository and answer ports, local adapters, dependency injection, and future integration boundaries.
 - Day 7 complete: Azure CLI and Bicep setup, subscription governance, naming and tags, AUD $10 budget alerts, reviewed infrastructure deployment, and an empty governed resource group.
 - Day 8 complete: secure Azure Storage, private document container, managed identity, Key Vault, RBAC, recovery controls, and synthetic document upload.
+- Day 9 complete: Azure Blob adapter, passwordless configuration, portable line-ending fix, governed FastAPI endpoints, and 34 passing tests.
