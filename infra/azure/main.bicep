@@ -3,7 +3,7 @@ targetScope = 'subscription'
 @description('Azure region for the development environment.')
 param location string = 'australiaeast'
 
-@description('Name of the development resource group.')
+@description('Name of the governed resource group.')
 param resourceGroupName string = 'rg-aika-dev-aue-001'
 
 @description('Required governance tags.')
@@ -22,12 +22,16 @@ resource developmentResourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01
   tags: resourceTags
 }
 
-output deployedResourceGroupName string = developmentResourceGroup.name
+var uniqueSuffix = uniqueString(
+  subscription().id,
+  resourceGroupName
+)
 
-var uniqueSuffix = uniqueString(subscription().id, resourceGroupName)
 var identityName = 'id-aika-dev-aue-001'
 var storageAccountName = 'staika${uniqueSuffix}'
 var keyVaultName = 'kv-aika-${uniqueSuffix}'
+var appServicePlanName = 'asp-aika-dev-aue-001'
+var webAppName = 'app-aika-${uniqueSuffix}'
 
 module managedIdentityModule './modules/identity/main.bicep' = {
   name: 'managed-identity-deployment'
@@ -61,6 +65,24 @@ module keyVaultModule './modules/key-vault/main.bicep' = {
   }
 }
 
-output managedIdentityName string = identityName
+module appServiceModule './modules/app-service/main.bicep' = {
+  name: 'app-service-deployment'
+  scope: developmentResourceGroup
+  params: {
+    appServicePlanName: appServicePlanName
+    webAppName: webAppName
+    location: location
+    resourceTags: resourceTags
+    managedIdentityResourceId: managedIdentityModule.outputs.identityId
+    managedIdentityClientId: managedIdentityModule.outputs.clientId
+    storageAccountUrl: storageModule.outputs.blobEndpoint
+    storageContainerName: storageModule.outputs.containerName
+  }
+}
+
+output deployedResourceGroupName string = developmentResourceGroup.name
+output managedIdentityName string = managedIdentityModule.outputs.identityId
 output storageName string = storageModule.outputs.storageAccountName
 output vaultName string = keyVaultModule.outputs.keyVaultName
+output webAppName string = appServiceModule.outputs.webAppName
+output webAppHostName string = appServiceModule.outputs.defaultHostName
