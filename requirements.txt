@@ -12,3 +12,10 @@ azure-storage-blob>=12.22,<13
 
 # Run automated tests
 pytest>=8,<9
+
+# Expose the portable application through a web API
+fastapi>=0.116,<1
+uvicorn>=0.35,<1
+
+# Test the API without starting a real server
+httpx>=0.28,<1
