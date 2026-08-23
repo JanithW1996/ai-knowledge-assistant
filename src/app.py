@@ -10,8 +10,10 @@ from src.answer_service import answer_question
 VALID_ROLES = [
     "employee",
     "manager",
+    "senior_executive",
     "hr_adviser",
     "it_support_officer",
+    "finance_officer",
 ]
 
 
@@ -23,23 +25,34 @@ def main(
     load_dotenv()
 
     print("AI Knowledge Assistant")
-    print("Data policy: synthetic, fictional organisational data only.")
+    print(
+        "Data policy: synthetic, fictional "
+        "organisational data only."
+    )
 
     if not question:
-        print("Enter a question to search the knowledge base.")
+        print(
+            "Enter a question to search "
+            "the knowledge base."
+        )
         return
 
-    result = answer_question(question, role)
+    result = answer_question(
+        question,
+        role,
+    )
 
     print("\nAnswer:\n")
     print(result["answer"])
 
     if result["citations"]:
         print("\nSources:")
+
         for citation in result["citations"]:
             print(f"- {citation}")
 
     print(f"\nMode: {result['mode']}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -51,4 +64,7 @@ if __name__ == "__main__":
     )
     arguments = parser.parse_args()
 
-    main(arguments.question, arguments.role)
+    main(
+        arguments.question,
+        arguments.role,
+    )

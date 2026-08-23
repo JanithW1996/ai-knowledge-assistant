@@ -106,3 +106,47 @@ def test_interface_script_calls_governed_api() -> None:
     assert response.status_code == 200
     assert 'fetch("/v1/answers"' in response.text
     assert "textContent" in response.text
+
+
+def test_api_returns_unauthorized_without_citation() -> None:
+    """The API must deny a strong restricted match safely."""
+    response = client.post(
+        "/v1/answers",
+        json={
+            "question": (
+                "How should a privileged account recovery "
+                "request be verified?"
+            ),
+            "role": "employee",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "answer": (
+            "The user is unauthorized to access this data."
+        ),
+        "citations": [],
+        "grounded": False,
+        "mode": "unauthorized",
+    }
+
+
+def test_interface_offers_restricted_questions() -> None:
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "Try a question:" in response.text
+    assert "Restricted demonstrations" not in response.text
+    assert "🔒 HR leave processing" in response.text
+    assert "🔒 Management staffing" in response.text
+    assert "🔒 IT access recovery" in response.text
+
+
+def test_interface_supports_access_denied_badge() -> None:
+    """The browser script visually distinguishes denied access."""
+    response = client.get("/static/app.js")
+
+    assert response.status_code == 200
+    assert "Access denied" in response.text
+    assert "access-denied" in response.text
