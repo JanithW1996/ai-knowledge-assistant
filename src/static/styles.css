@@ -238,6 +238,30 @@ textarea::placeholder {
   font-size: 0.84rem;
 }
 
+.suggestion-groups {
+  margin-top: 18px;
+}
+
+.suggestion-groups .suggestions {
+  margin-top: 0;
+}
+
+.restricted-suggestions {
+  margin-top: 10px !important;
+}
+
+.restricted-suggestion {
+  color: #92400e;
+  background: #fffbeb;
+  border-color: #f6c768;
+}
+
+.restricted-suggestion:hover {
+  color: #78350f;
+  background: #fef3c7;
+  border-color: var(--gold);
+}
+
 .suggestion {
   padding: 7px 11px;
   color: var(--navy-soft);
@@ -283,6 +307,11 @@ textarea::placeholder {
 .not-grounded {
   color: #92400e;
   background: #fef3c7;
+}
+
+.access-denied {
+  color: #991b1b;
+  background: #fee2e2;
 }
 
 .answer-text {

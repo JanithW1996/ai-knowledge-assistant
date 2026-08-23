@@ -1,34 +1,87 @@
 # AI Knowledge Assistant
 
-An Azure-ready governed AI assistant that helps users find information from authorised organisational documents.
+An Azure-ready governed knowledge assistant that retrieves concise answers from authorized organizational documents.
 
 ## Project goal
 
-Build a secure knowledge assistant demonstrating:
+Demonstrate how an enterprise knowledge assistant can combine:
 
-- Microsoft Entra ID authentication
-- role-based access control
-- secure Azure document storage
-- Azure Key Vault secret management
-- authorised retrieval before AI generation
-- monitoring and cost governance
+- role-based document access;
+- organizational hierarchy;
+- departmental restrictions;
+- document sensitivity levels;
+- authorized retrieval before answer generation;
+- grounded answers with citations;
+- safe access denial and evidence-unavailable responses;
+- secure Azure document storage;
+- managed identity and passwordless Azure access;
+- Azure Key Vault, infrastructure-as-code and cost governance;
+- replaceable local, Azure, Microsoft 365 and AI-provider adapters.
+
+Microsoft Entra authentication is the planned production identity source. The current local persona selector demonstrates authorization behavior only.
 
 ## Data policy
 
-This project uses synthetic, fictional organisational data only.
+This project uses synthetic, fictional organizational data only.
 
-Do not add real customer, employee, operational, confidential, personal, or production data.
+Do not add real customer, employee, salary, payroll, banking, tax, operational, confidential, personal or production information.
 
 ## Project structure
 
-- `src/` — Python application code
-- `tests/` — automated tests
-- `data/synthetic/` — fictional project documents
-- `docs/` — architecture and governance notes
-- `infra/` — Azure infrastructure definitions
+- `src/` — Python application and interface code
+- `tests/` — automated security and behavior tests
+- `data/synthetic/` — invented organizational documents
+- `docs/` — architecture, governance and demonstration guidance
+- `infra/` — Azure Bicep infrastructure definitions
 - `scripts/` — setup and deployment helpers
 
-## Local grounded answer demo
+## Synthetic knowledge base
+
+The demonstration contains seven fictional documents:
+
+- public company overview;
+- internal workplace guide;
+- restricted HR leave procedure;
+- restricted management workforce-planning procedure;
+- restricted IT privileged-access recovery procedure;
+- restricted financial planning summary;
+- highly confidential payroll control review.
+
+The same synthetic dataset is stored locally and in the governed Azure Blob Storage container.
+
+## Supported demonstration roles
+
+- `employee`
+- `manager`
+- `senior_executive`
+- `hr_adviser`
+- `it_support_officer`
+- `finance_officer`
+
+## Access model
+
+| Document category | Employee | Manager | Senior executive | Specialist |
+|---|---:|---:|---:|---:|
+| Public and internal guidance | Yes | Yes | Yes | Yes |
+| Management planning | No | Yes | Yes | No |
+| Restricted HR procedure | No | No | Yes | HR only |
+| Restricted IT procedure | No | No | Yes | IT only |
+| Restricted finance summary | No | No | Yes | Finance only |
+| Highly confidential payroll review | No | No | No | Finance only |
+
+Senior executives inherit appropriate employee and manager access but do not inherit finance-only payroll access.
+
+See `docs/access-control.md` for the complete policy.
+
+## Answer outcomes
+
+The application produces three controlled outcomes:
+
+1. **Grounded answer** — authorized evidence exists, so the response includes a citation.
+2. **Access denied** — relevant information exists, but the role is unauthorized. No restricted content or citation is returned.
+3. **Evidence unavailable** — no relevant authorized information exists, so the assistant safely declines.
+
+## Local command-line demo
 
 Activate the virtual environment, then run:
 
@@ -36,18 +89,21 @@ Activate the virtual environment, then run:
 python -m src.app "How should I report a security incident?" --role employee
 ```
 
-The current mode is a deterministic local extractive answer, not an external AI model.
+Example hierarchy demonstration:
 
-Supported fictional roles:
+```powershell
+python -m src.app "What financial planning information may senior executives review?" --role senior_executive
+```
 
-- `employee`
-- `manager`
-- `hr_adviser`
-- `it_support_officer`
+Example confidentiality exception:
 
-The application filters documents by role before calculating relevance.
+```powershell
+python -m src.app "What payroll amount, reconciliation status and exception count must finance review?" --role senior_executive
+```
 
-## Local API demo
+The current answer provider is deterministic and extractive. It does not call an external AI model.
+
+## Presentation interface
 
 Keep `DOCUMENT_REPOSITORY=local` in the ignored `.env` file, then run:
 
@@ -55,45 +111,117 @@ Keep `DOCUMENT_REPOSITORY=local` in the ignored `.env` file, then run:
 python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
 ```
 
-Open `http://127.0.0.1:8000/docs` to test the local API.
+Open:
 
-The role in the current API request is for local demonstration only. Do not expose the API publicly until verified Microsoft Entra identities are mapped to trusted roles.
+- `http://127.0.0.1:8000` for the non-technical presentation interface;
+- `http://127.0.0.1:8000/docs` for the developer API documentation;
+- `http://127.0.0.1:8000/health` for the health endpoint.
 
-## Presentation interface
+The interface demonstrates:
 
-Start the local application:
+- general grounded answers;
+- safe uncertainty;
+- departmental restrictions;
+- role hierarchy;
+- executive financial access;
+- finance-only payroll access;
+- citations without restricted-data leakage.
+
+## Testing
+
+Validate the synthetic dataset:
 
 ```powershell
-python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
+python src/validate_data.py
 ```
 
-Open `http://127.0.0.1:8000` for the non-technical presentation interface.
+Run the complete automated test suite:
 
-Open `http://127.0.0.1:8000/docs` for the developer API documentation.
+```powershell
+python -m pytest
+```
 
-The interface supports grounded answers, source citations, safe refusal and demonstration personas.
+Current verified result:
 
-## Deployment status
+```text
+Dataset validation passed: 7 synthetic documents.
+83 tests passed.
+```
 
-The secure Azure data foundation is deployed and contains synthetic documents only.
+## Azure foundation
 
-The API and presentation interface remain local because the current persona selector is not production authentication. Application startup is deliberately blocked in production mode until verified organisational identity is implemented.
+The deployed Azure development foundation includes:
 
-See:
+- governed resource group;
+- required governance tags;
+- Azure Storage account;
+- private blob container;
+- user-assigned managed identity;
+- role-based storage access;
+- Azure Key Vault;
+- recovery protections;
+- Bicep infrastructure definitions;
+- AUD $10 monthly budget and alerts.
 
-- `docs/demo-guide.md` for the presentation walkthrough.
-- `docs/final-architecture.md` for the completed system design.
-- `docs/api-and-azure-adapter.md` for Azure and API integration details.
+The Azure Blob container contains the same seven synthetic documents used by the local application.
 
-## Current status
+No storage keys, passwords, connection strings or personal email addresses belong in GitHub.
 
-- Day 1 complete: local project foundation, governance, testing, and GitHub setup.
-- Day 2 complete: synthetic knowledge documents, classification metadata, dataset validation, and role-based document access.
-- Day 3 complete: authorised keyword retrieval, relevance ranking, command-line search, and source references.
-- Day 4 complete: document chunking, authorised passage retrieval, controlled context limits, and precise citations
-- Day 5 complete: grounded answer service, safe abstention, prompt boundaries, citations, and local extractive mode.
-- Day 6 complete: provider-neutral models, repository and answer ports, local adapters, dependency injection, and future integration boundaries.
-- Day 7 complete: Azure CLI and Bicep setup, subscription governance, naming and tags, AUD $10 budget alerts, reviewed infrastructure deployment, and an empty governed resource group.
-- Day 8 complete: secure Azure Storage, private document container, managed identity, Key Vault, RBAC, recovery controls, and synthetic document upload.
-- Day 9 complete: Azure Blob adapter, passwordless configuration, portable line-ending fix, governed FastAPI endpoints, and 34 passing tests.
-- Day 10 complete: presentation interface, production safety lock, automated GitHub testing, container definition, final architecture, and demonstration guide.
+## Portability
+
+The core application depends on provider-neutral interfaces.
+
+Current adapters include:
+
+- local filesystem document repository;
+- Azure Blob Storage document repository;
+- local deterministic answer provider.
+
+Planned adapters can support:
+
+- Microsoft SharePoint;
+- Microsoft 365 and Copilot integrations;
+- approved external AI providers;
+- other cloud document repositories.
+
+This design allows new platforms to replace adapters without rebuilding authorization, retrieval and answer-generation rules.
+
+## Production security boundary
+
+The local persona selector is not authentication.
+
+Do not expose the application as a production service until:
+
+- Microsoft Entra authenticates the user;
+- trusted groups are mapped to application roles;
+- users cannot select their own roles;
+- network controls are reviewed;
+- logging and monitoring are enabled;
+- security and privacy reviews are completed.
+
+Application startup is deliberately blocked in production mode until verified organizational identity is configured.
+
+## Documentation
+
+- `docs/access-control.md` — hierarchy, classifications and permission matrix
+- `docs/demo-guide.md` — recruiter-friendly demonstration walkthrough
+- `docs/final-architecture.md` — completed architecture
+- `docs/api-and-azure-adapter.md` — API and Azure repository integration
+- `docs/azure-governance.md` — Azure governance controls
+- `docs/azure-secure-services.md` — storage, identity and Key Vault design
+- `docs/portability-architecture.md` — ports-and-adapters design
+- `docs/integration-targets.md` — future deployment targets
+
+## Project milestones
+
+- **Day 1:** repository, environment, governance and testing foundation
+- **Day 2:** synthetic data, classifications and role-based access
+- **Day 3:** authorized retrieval and source references
+- **Day 4:** passage chunking and controlled context
+- **Day 5:** grounded answers, citations and safe abstention
+- **Day 6:** portable ports-and-adapters architecture
+- **Day 7:** Azure governance, Bicep, tags and budget controls
+- **Day 8:** secure Azure Storage, Key Vault, identity and RBAC
+- **Day 9:** Azure Blob adapter and governed FastAPI endpoints
+- **Day 10:** presentation interface, runtime safeguards, CI and container definition
+- **Enhancement:** explicit unauthorized responses, expanded restricted scenarios, organizational hierarchy, finance sensitivity levels, seven synthetic documents and 83 passing tests

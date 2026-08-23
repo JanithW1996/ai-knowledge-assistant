@@ -1,6 +1,10 @@
 """Create grounded answers using replaceable providers."""
 
-from src.context_builder import build_context, retrieve_passages
+from src.context_builder import (
+    build_context,
+    get_unauthorised_relevance_score,
+    retrieve_passages,
+)
 from src.core.models import GenerationRequest
 from src.dependencies import create_answer_provider
 from src.ports.answer_provider import AnswerProvider
@@ -11,14 +15,35 @@ ABSTENTION_MESSAGE = (
     "I do not have enough authorised information to answer that question."
 )
 
+UNAUTHORISED_MESSAGE = (
+    "The user is unauthorized to access this data."
+)
+
 
 def answer_question(
     question: str,
     role: str,
     provider: AnswerProvider | None = None,
 ) -> dict:
-    """Return a grounded provider answer or safely abstain."""
+    """Return a grounded provider answer, denial or safe abstention."""
     passages = retrieve_passages(question, role)
+
+    unauthorised_score = get_unauthorised_relevance_score(
+        question,
+        role,
+    )
+    authorised_score = passages[0]["score"] if passages else 0
+
+    if (
+        unauthorised_score >= 2
+        and unauthorised_score > authorised_score
+    ):
+        return {
+            "answer": UNAUTHORISED_MESSAGE,
+            "citations": [],
+            "grounded": False,
+            "mode": "unauthorized",
+        }
 
     if not passages:
         return {

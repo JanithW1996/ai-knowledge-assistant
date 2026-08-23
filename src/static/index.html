@@ -2,19 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
   <meta
     name="description"
     content="Governed AI Knowledge Assistant demonstration."
   >
   <title>AI Knowledge Assistant</title>
   <link rel="stylesheet" href="/static/styles.css">
-  <script src="/static/app.js" defer></script>
+  <script src="/static/app.js?v=3" defer></script>
 </head>
 
 <body>
   <header class="topbar">
-    <a class="brand" href="/" aria-label="AI Knowledge Assistant home">
+    <a
+      class="brand"
+      href="/"
+      aria-label="AI Knowledge Assistant home"
+    >
       <span class="brand-mark">AK</span>
       <span>
         <strong>AI Knowledge Assistant</strong>
@@ -30,36 +37,73 @@
 
   <main>
     <section class="hero">
-      <p class="eyebrow">CLEAR ANSWERS. TRUSTED SOURCES.</p>
-      <h1>Ask with confidence.<br>Answer with evidence.</h1>
+      <p class="eyebrow">
+        CLEAR ANSWERS. TRUSTED SOURCES.
+      </p>
+
+      <h1>
+        Ask with confidence.<br>
+        Answer with evidence.
+      </h1>
+
       <p class="hero-copy">
-        Find concise organisational guidance from authorised documents,
-        with transparent citations and privacy-aware access controls.
+        Find concise organisational guidance from authorised
+        documents, with transparent citations and
+        privacy-aware access controls.
       </p>
     </section>
 
-    <section class="assistant-panel" aria-labelledby="assistant-heading">
+    <section
+      class="assistant-panel"
+      aria-labelledby="assistant-heading"
+    >
       <div class="panel-heading">
         <div>
-          <p class="section-label">KNOWLEDGE SEARCH</p>
-          <h2 id="assistant-heading">What would you like to know?</h2>
+          <p class="section-label">
+            KNOWLEDGE SEARCH
+          </p>
+
+          <h2 id="assistant-heading">
+            What would you like to know?
+          </h2>
         </div>
 
         <label class="role-field">
           <span>Demo persona</span>
+
           <select id="role">
-            <option value="employee">Employee</option>
-            <option value="manager">Manager</option>
-            <option value="hr_adviser">HR adviser</option>
+            <option value="employee">
+              Employee
+            </option>
+
+            <option value="manager">
+              Manager
+            </option>
+
+            <option value="senior_executive">
+              Senior executive
+            </option>
+
+            <option value="hr_adviser">
+              HR adviser
+            </option>
+
             <option value="it_support_officer">
               IT support officer
+            </option>
+
+            <option value="finance_officer">
+              Finance officer
             </option>
           </select>
         </label>
       </div>
 
       <form id="question-form">
-        <label class="sr-only" for="question">
+        <label
+          class="sr-only"
+          for="question"
+        >
           Organisational question
         </label>
 
@@ -73,94 +117,168 @@
             placeholder="Ask an organisational question..."
           ></textarea>
 
-          <button id="ask-button" type="submit">
+          <button
+            id="ask-button"
+            type="submit"
+          >
             <span>Ask assistant</span>
             <span aria-hidden="true">→</span>
           </button>
         </div>
       </form>
 
-      <div class="suggestions">
-        <span>Try a question:</span>
-        <button
-          class="suggestion"
-          type="button"
-          data-question="How should I report a security incident?"
-        >
-          Report a security incident
-        </button>
-        <button
-          class="suggestion"
-          type="button"
-          data-question="How do I request leave?"
-        >
-          Request leave
-        </button>
-        <button
-          class="suggestion"
-          type="button"
-          data-question="What are our workplace expectations?"
-        >
-          Workplace expectations
-        </button>
+      <div class="suggestion-groups">
+        <div class="suggestions">
+          <span>Try a question:</span>
+
+          <button
+            type="button"
+            class="suggestion"
+            data-question="How should I report a security incident?"
+          >
+            Report a security incident
+          </button>
+
+          <button
+            type="button"
+            class="suggestion"
+            data-question="What are the workplace expectations?"
+          >
+            Workplace expectations
+          </button>
+
+          <button
+            type="button"
+            class="suggestion restricted-suggestion"
+            data-question="What details must HR check in a leave request?"
+          >
+            🔒 HR leave processing
+          </button>
+
+          <button
+            type="button"
+            class="suggestion restricted-suggestion"
+            data-question="What business need, expected duration and available budget are required for temporary staffing?"
+          >
+            🔒 Management staffing
+          </button>
+
+          <button
+            type="button"
+            class="suggestion restricted-suggestion"
+            data-question="How should a privileged account recovery request be verified?"
+          >
+            🔒 IT access recovery
+          </button>
+
+          <button
+            type="button"
+            class="suggestion restricted-suggestion"
+            data-question="What financial planning information may senior executives review?"
+          >
+            🔒 Executive financial summary
+          </button>
+
+          <button
+            type="button"
+            class="suggestion restricted-suggestion"
+            data-question="What payroll amount, reconciliation status and exception count must finance review?"
+          >
+            🔒 Confidential payroll review
+          </button>
+        </div>
       </div>
 
       <p class="demo-notice">
-        Demo personas simulate access levels. Production access must come
-        from a verified organisational identity.
+        Demo personas simulate access levels. Production access
+        must come from a verified organisational identity.
       </p>
     </section>
 
     <section
       id="result-panel"
       class="result-panel hidden"
+      hidden
       aria-live="polite"
       aria-labelledby="answer-heading"
     >
       <div class="result-header">
         <div>
-          <p class="section-label">GOVERNED RESPONSE</p>
-          <h2 id="answer-heading">Answer</h2>
+          <p class="section-label">
+            GOVERNED RESPONSE
+          </p>
+
+          <h2 id="answer-heading">
+            Answer
+          </h2>
         </div>
-        <span id="grounding-badge" class="grounding-badge"></span>
+
+        <span
+          id="grounding-badge"
+          class="grounding-badge"
+        ></span>
       </div>
 
-      <p id="answer-text" class="answer-text"></p>
+      <p
+        id="answer-text"
+        class="answer-text"
+      ></p>
 
-      <div id="sources-section" class="sources">
+      <div
+        id="sources-section"
+        class="sources"
+      >
         <h3>Authorised sources</h3>
         <ul id="source-list"></ul>
       </div>
 
       <p class="fictional-note">
-        This demonstration uses invented organisational information only.
+        This demonstration uses invented organisational
+        information only.
       </p>
     </section>
 
-    <section class="trust-grid" aria-label="Governance safeguards">
+    <section
+      class="trust-grid"
+      aria-label="Governance safeguards"
+    >
       <article>
         <span class="trust-number">01</span>
         <h3>Authorised access</h3>
-        <p>Documents are filtered using the selected demonstration role.</p>
+        <p>
+          Documents are filtered using the selected
+          demonstration role.
+        </p>
       </article>
 
       <article>
         <span class="trust-number">02</span>
         <h3>Grounded answers</h3>
-        <p>Responses use retrieved evidence and include source citations.</p>
+        <p>
+          Responses use retrieved evidence and include
+          source citations.
+        </p>
       </article>
 
       <article>
         <span class="trust-number">03</span>
         <h3>Safe uncertainty</h3>
-        <p>The assistant declines when authorised evidence is insufficient.</p>
+        <p>
+          The assistant declines when authorised evidence
+          is insufficient.
+        </p>
       </article>
     </section>
   </main>
 
   <footer>
-    <span>AI Knowledge Assistant · Portfolio demonstration</span>
-    <a href="/docs">Developer API</a>
+    <span>
+      AI Knowledge Assistant · Portfolio demonstration
+    </span>
+
+    <a href="/docs">
+      Developer API
+    </a>
   </footer>
 </body>
 </html>

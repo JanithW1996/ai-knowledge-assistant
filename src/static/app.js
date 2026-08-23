@@ -12,10 +12,15 @@ const suggestions = document.querySelectorAll(".suggestion");
 
 suggestions.forEach((button) => {
   button.addEventListener("click", () => {
+    clearResult();
     questionInput.value = button.dataset.question;
     questionInput.focus();
   });
 });
+
+
+questionInput.addEventListener("input", clearResult);
+roleInput.addEventListener("change", clearResult);
 
 
 form.addEventListener("submit", async (event) => {
@@ -28,6 +33,7 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  clearResult();
   setLoading(true);
 
   try {
@@ -56,6 +62,15 @@ form.addEventListener("submit", async (event) => {
 });
 
 
+function clearResult() {
+  resultPanel.hidden = true;
+  resultPanel.classList.add("hidden");
+  answerText.textContent = "";
+  sourceList.replaceChildren();
+  sourcesSection.hidden = true;
+}
+
+
 function setLoading(isLoading) {
   askButton.disabled = isLoading;
   askButton.querySelector("span").textContent = isLoading
@@ -68,13 +83,20 @@ function showResult(result) {
   answerText.textContent = result.answer;
   sourceList.replaceChildren();
 
-  groundingBadge.textContent = result.grounded
-    ? "✓ Grounded in evidence"
-    : "Evidence unavailable";
-
-  groundingBadge.className = result.grounded
-    ? "grounding-badge grounded"
-    : "grounding-badge not-grounded";
+  if (result.mode === "unauthorized") {
+    groundingBadge.textContent = "Access denied";
+    groundingBadge.className = (
+      "grounding-badge access-denied"
+    );
+  } else if (result.grounded) {
+    groundingBadge.textContent = "✓ Grounded in evidence";
+    groundingBadge.className = "grounding-badge grounded";
+  } else {
+    groundingBadge.textContent = "Evidence unavailable";
+    groundingBadge.className = (
+      "grounding-badge not-grounded"
+    );
+  }
 
   result.citations.forEach((citation) => {
     const item = document.createElement("li");
@@ -83,6 +105,7 @@ function showResult(result) {
   });
 
   sourcesSection.hidden = result.citations.length === 0;
+  resultPanel.hidden = false;
   resultPanel.classList.remove("hidden");
   resultPanel.scrollIntoView({
     behavior: "smooth",
@@ -99,5 +122,6 @@ function showError() {
     ),
     citations: [],
     grounded: false,
+    mode: "error",
   });
 }

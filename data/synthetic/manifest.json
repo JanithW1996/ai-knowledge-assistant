@@ -10,8 +10,10 @@
       "allowed_roles": [
         "employee",
         "manager",
+        "senior_executive",
         "hr_adviser",
-        "it_support_officer"
+        "it_support_officer",
+        "finance_officer"
       ]
     },
     {
@@ -22,8 +24,10 @@
       "allowed_roles": [
         "employee",
         "manager",
+        "senior_executive",
         "hr_adviser",
-        "it_support_officer"
+        "it_support_officer",
+        "finance_officer"
       ]
     },
     {
@@ -32,7 +36,47 @@
       "path": "restricted/hr/leave-processing-guide.md",
       "classification": "restricted",
       "allowed_roles": [
-        "hr_adviser"
+        "hr_adviser",
+        "senior_executive"
+      ]
+    },
+    {
+      "id": "MGR-001",
+      "title": "Workforce Planning Guide",
+      "path": "restricted/manager/workforce-planning-guide.md",
+      "classification": "restricted",
+      "allowed_roles": [
+        "manager",
+        "senior_executive"
+      ]
+    },
+    {
+      "id": "IT-001",
+      "title": "Privileged Access Recovery Guide",
+      "path": "restricted/it/privileged-access-recovery-guide.md",
+      "classification": "restricted",
+      "allowed_roles": [
+        "it_support_officer",
+        "senior_executive"
+      ]
+    },
+    {
+      "id": "FIN-001",
+      "title": "Financial Planning Summary",
+      "path": "restricted/finance/financial-planning-summary.md",
+      "classification": "restricted",
+      "allowed_roles": [
+        "senior_executive",
+        "finance_officer"
+      ]
+    },
+    {
+      "id": "FIN-002",
+      "title": "Payroll Control Review",
+      "path": "restricted/finance/payroll-control-review.md",
+      "classification": "highly_confidential",
+      "allowed_roles": [
+        "finance_officer"
       ]
     }
   ]
