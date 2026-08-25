@@ -1,0 +1,39 @@
+version: 2
+
+updates:
+  # Check Python packages listed in requirements.txt.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Australia/Darwin"
+    open-pull-requests-limit: 3
+    versioning-strategy: "increase-if-necessary"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "deps"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+
+  # Keep actions used by GitHub workflows updated.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Australia/Darwin"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "ci"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
