@@ -11,7 +11,7 @@ azure-keyvault-secrets>=4.8,<5
 azure-storage-blob>=12.22,<13
 
 # Run automated tests
-pytest>=8,<9
+pytest>=8,<10
 
 # Expose the portable application through a web API
 fastapi>=0.116,<1
